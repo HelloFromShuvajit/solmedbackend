@@ -30,9 +30,6 @@ public class User {
     @Column(nullable = false, length = 10)
     private String gender;
 
-    @Column(nullable = true)
-    private String[] meds;
-
 
 
     public String getEmail() {
@@ -58,12 +55,6 @@ public class User {
     }
     public void setGender(String gender) {
         this.gender = gender;
-    }
-    public String[] getMeds() {
-        return meds;
-    }
-    public void setMeds(String[] meds) {
-        this.meds = meds;
     }
     public void setId(Long id){
         this.id = id;
