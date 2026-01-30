@@ -21,23 +21,34 @@ public class User {
     @Column(nullable =false, unique = true)
     private String email;
 
+    @Column(nullable = false, length = 10)
+    private Long phone;
+
     @Column(nullable = false, length = 64) 
     private String password;
-
+    
     @Column(nullable = false, length = 3)
     private int age;
-
+    
     @Column(nullable = false, length = 10)
     private String gender;
-
-
-
+    
+    
+    
     public String getEmail() {
         return email;
     }
     public void setEmail(String email) {
         this.email = email;
     }
+    
+    public Long getPhone() {
+        return phone;
+    }
+    public void setPhone(Long phone) {
+        this.phone = phone;
+    }
+        
     public String getPassword() {
         return password;
     }
