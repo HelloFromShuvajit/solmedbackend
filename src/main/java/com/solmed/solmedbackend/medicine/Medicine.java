@@ -22,7 +22,7 @@ public class Medicine {
         return medId;
     }
 
-    public void setMedId(Long medId) {
+    public void setMedId(Long medId) {               //do I need this?
         this.medId = medId;
     }
 
@@ -33,7 +33,4 @@ public class Medicine {
     public void setMedName(String medName) {
         this.medName = medName;
     }
-
-    
-
 }

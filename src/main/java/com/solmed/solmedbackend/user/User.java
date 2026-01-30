@@ -67,7 +67,7 @@ public class User {
     public void setGender(String gender) {
         this.gender = gender;
     }
-    public void setId(Long id){
+    public void setId(Long id){             //do I need this?
         this.id = id;
     }
     public Long getId(){

@@ -9,7 +9,6 @@ public class MedicineService {
     @Autowired
     private MedicineRepository medicinerepo;
 
-    
 
     public Medicine getMedicineById(Long id){
         return medicinerepo.findById(id).orElse(null);

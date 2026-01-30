@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 public class MedicineController {
+    
     @Autowired
     private MedicineService medicineService;
 

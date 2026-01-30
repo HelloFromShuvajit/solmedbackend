@@ -24,6 +24,7 @@ public class UserController {
     public User postUser(@RequestBody User user) {
         return userService.addUser(user);
     }
+
     @PatchMapping("/updateUserPhone/{id}")
     public User patchUserPhone(@PathVariable Long id, @RequestBody Long phone){
         return userService.updateUserPhone(id,phone);
@@ -33,7 +34,7 @@ public class UserController {
     public Iterable<User> getAllUsers() {
         return userService.getAllUsers();
     }
-    
+
     
     @GetMapping("/getUserById/{id}")
     public User getUserById(@PathVariable Long id){
