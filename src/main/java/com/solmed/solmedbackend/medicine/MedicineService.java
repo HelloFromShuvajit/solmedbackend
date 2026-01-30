@@ -1,0 +1,30 @@
+package com.solmed.solmedbackend.medicine;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class MedicineService {
+
+    @Autowired
+    private MedicineRepository medicinerepo;
+
+    
+
+    public Medicine getMedicineById(Long id){
+        return medicinerepo.findById(id).orElse(null);
+    }
+
+
+
+    public Medicine saveMedicine(Medicine medicine) {
+        return medicinerepo.save(medicine);
+    }
+
+
+
+    public Iterable<Medicine> getAllMedicine() {
+
+        return medicinerepo.findAll();
+    }
+}
