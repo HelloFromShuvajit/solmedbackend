@@ -1,7 +1,5 @@
 package com.solmed.solmedbackend.UserMedicine;
 
-import java.time.LocalTime;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,10 +34,5 @@ public class UserMedicineController {
     public void deleteUserMedicineById(@PathVariable Long id){
         userMedicineService.deleteUserMedicineById(id);
     }
-    @PostMapping("/test2")
-    public LocalTime test2(@RequestBody LocalTime body) {
-    System.out.println(body);
-    return body;
-}
 
 }

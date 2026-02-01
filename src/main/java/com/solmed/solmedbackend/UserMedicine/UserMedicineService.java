@@ -14,7 +14,7 @@ import com.solmed.solmedbackend.user.UserRepository;
 public class UserMedicineService {
 
     @Autowired
-    private UserMedicineRepository userMedicineRepository;
+    private UserMedicineRepository userMedicineRepo;
     
     @Autowired 
     private UserRepository userrepo;
@@ -24,9 +24,8 @@ public class UserMedicineService {
 
 
     public UserMedicine getUserMedicineName(Long id) {
-        return userMedicineRepository.findById(id).orElse(null);
+        return userMedicineRepo.findById(id).orElse(null);
     }
-
     public UserMedicine addUserMedicine(UserMedicineRequestDto userMedicineDto) {
         UserMedicine userMedicine= new UserMedicine();
         User user = userrepo.findById(userMedicineDto.getUserId()).orElse(null);
@@ -35,11 +34,11 @@ public class UserMedicineService {
         userMedicine.setMedicine(medicine);
         userMedicine.setMedTiming(userMedicineDto.getInputTime());
         
-        return userMedicineRepository.save(userMedicine);
+        return userMedicineRepo.save(userMedicine);
     }
 
     public void deleteUserMedicineById(Long id) {
-        userMedicineRepository.deleteById(id);
+        userMedicineRepo.deleteById(id);
     }
 
 }

@@ -5,8 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
 
-import com.solmed.solmedbackend.DTO.MedicineLogRequestDto;
-import com.solmed.solmedbackend.UserMedicine.UserMedicine;
 import com.solmed.solmedbackend.UserMedicine.UserMedicineRepository;
 
 @Service
@@ -23,11 +21,7 @@ public class MedicineLogService {
         return medlogRepo.findById(id).orElse(null);
     }
 
-    public MedicineLog addMedicineLog(MedicineLogRequestDto medLogDto) {
-        MedicineLog medLog= new MedicineLog();
-        UserMedicine userMedicine = userMedRepo.findById(medLogDto.getUserMedId()).orElse(null);
-        medLog.setMedStock(medLogDto.getMedStock());
-        medLog.setUserMed(userMedicine);
+    public MedicineLog addMedicineLog(MedicineLog medLog) {
         return medlogRepo.save(medLog);
     }
 

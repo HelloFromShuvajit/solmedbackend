@@ -3,7 +3,6 @@ package com.solmed.solmedbackend.MedicineLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.solmed.solmedbackend.DTO.MedicineLogRequestDto;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,8 +25,8 @@ public class MedicineLogController {
     }
 
     @PostMapping("/addMedicineLog")
-    public MedicineLog addMedicineLog(@RequestBody MedicineLogRequestDto medLogDto) {
-        return medlogService.addMedicineLog(medLogDto);
+    public MedicineLog addMedicineLog(@RequestBody MedicineLog medLog) {
+        return medlogService.addMedicineLog(medLog);
     }
 
     @PatchMapping("/updateMedicineLogAfterTakenById/{id}")
