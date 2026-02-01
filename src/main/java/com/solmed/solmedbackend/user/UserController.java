@@ -4,8 +4,6 @@ package com.solmed.solmedbackend.user;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.solmed.solmedbackend.DTO.UserRequestDto;
-
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -34,7 +32,7 @@ public class UserController {
         return userService.addUser(user);
     }
     @GetMapping("/getUserNameById/{id}")
-    public UserRequestDto getUserName(@PathVariable Long id) {
+    public String getUserName(@PathVariable Long id) {
         return userService.getUserName(id);
     }
     

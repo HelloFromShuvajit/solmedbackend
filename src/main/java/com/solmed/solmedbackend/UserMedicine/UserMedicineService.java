@@ -38,4 +38,8 @@ public class UserMedicineService {
         return userMedicineRepository.save(userMedicine);
     }
 
+    public void deleteUserMedicineById(Long id) {
+        userMedicineRepository.deleteById(id);
+    }
+
 }

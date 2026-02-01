@@ -4,7 +4,6 @@ package com.solmed.solmedbackend.user;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.solmed.solmedbackend.DTO.UserRequestDto;
 
 @Service
 public class UserService {
@@ -25,11 +24,11 @@ public class UserService {
         return null;
     }
 
-    public UserRequestDto getUserName(Long id){
+    public String getUserName(Long id){
         User user = userrepo.findById(id).orElse(null);
         if (user!= null) {
-            UserRequestDto userDto = new UserRequestDto(user.getId());
-            return userDto;
+            String userName=user.getName();
+            return userName;
         }
         return null;
     }

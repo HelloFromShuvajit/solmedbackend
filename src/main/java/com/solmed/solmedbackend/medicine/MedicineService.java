@@ -25,4 +25,10 @@ public class MedicineService {
     public Iterable<Medicine> getAllMedicine() {
         return medicinerepo.findAll();
     }
+
+
+
+    public void deleteMedicineById(Long id) {
+        medicinerepo.deleteById(id);
+    }
 }
