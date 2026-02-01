@@ -18,7 +18,7 @@ public class MedicineController {
 
     @PostMapping("/addMedicine")
     public Medicine postMedicine(@RequestBody Medicine medicine) {
-        return medicineService.saveMedicine(medicine);
+        return medicineService.addMedicine(medicine);
     }
     
     @GetMapping("/getAllMedicine")

@@ -22,9 +22,6 @@ public class Medicine {
         return medId;
     }
 
-    public void setMedId(Long medId) {               //do I need this?
-        this.medId = medId;
-    }
 
     public String getMedName() {
         return medName;

@@ -16,14 +16,13 @@ public class MedicineService {
 
 
 
-    public Medicine saveMedicine(Medicine medicine) {
+    public Medicine addMedicine(Medicine medicine) {
         return medicinerepo.save(medicine);
     }
 
 
 
     public Iterable<Medicine> getAllMedicine() {
-
         return medicinerepo.findAll();
     }
 }

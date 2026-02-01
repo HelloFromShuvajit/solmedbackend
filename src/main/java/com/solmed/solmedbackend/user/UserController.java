@@ -3,11 +3,16 @@ package com.solmed.solmedbackend.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.solmed.solmedbackend.DTO.UserRequestDto;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+
 
 
 
@@ -20,10 +25,19 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @DeleteMapping("/deleteUserById/{id}")
+    public void deleteUserById(@PathVariable Long id){
+        userService.deleteUserById(id);
+    }
     @PostMapping("/addUser")
     public User postUser(@RequestBody User user) {
         return userService.addUser(user);
     }
+    @GetMapping("/getUserNameById/{id}")
+    public UserRequestDto getUserName(@PathVariable Long id) {
+        return userService.getUserName(id);
+    }
+    
 
     @PatchMapping("/updateUserPhone/{id}")
     public User patchUserPhone(@PathVariable Long id, @RequestBody Long phone){
