@@ -24,8 +24,7 @@ public class User {
     @Column(nullable = false, length = 10)
     private Long phone;
 
-    @Column(nullable = false, length = 64) 
-    private String password;
+    // need to add password with security in future
     
     @Column(nullable = false, length = 3)
     private int age;
@@ -47,13 +46,6 @@ public class User {
     }
     public void setPhone(Long phone) {
         this.phone = phone;
-    }
-        
-    public String getPassword() {
-        return password;
-    }
-    public void setPassword(String password) {
-        this.password = password;
     }
     public int getAge() {
         return age;

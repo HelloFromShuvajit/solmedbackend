@@ -40,5 +40,16 @@ public class UserMedicineService {
     public void deleteUserMedicineById(Long id) {
         userMedicineRepo.deleteById(id);
     }
+    public UserMedicine updateMedicineUserMedById(Long medId, Long userMedicineId) {
+        UserMedicine userMedicine= userMedicineRepo.findById(userMedicineId).orElse(null);
+        if (userMedicine!=null) {
+            Medicine medicine = medrepo.findById(medId).orElse(null);
+            userMedicine.setMedicine(medicine);
+            return userMedicineRepo.save(userMedicine);
+        }
+        return null;
+
+
+    }
 
 }
