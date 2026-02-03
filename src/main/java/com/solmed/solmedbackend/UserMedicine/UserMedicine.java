@@ -62,7 +62,4 @@ public class UserMedicine {
     public Long getId() {
         return id;
     }
-
-
-
 }

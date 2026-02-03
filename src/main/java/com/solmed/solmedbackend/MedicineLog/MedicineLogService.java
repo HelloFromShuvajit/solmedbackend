@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
 
+import com.solmed.solmedbackend.DTO.MedicineLogRequestDto;
 import com.solmed.solmedbackend.UserMedicine.UserMedicineRepository;
 
 @Service
@@ -29,27 +30,46 @@ public class MedicineLogService {
         medlogRepo.deleteById(id);   
     }
 
-    public MedicineLog updateMedicineLogAfterTakenById(Long id) {
+    public MedicineLogRequestDto updateMedicineLogAfterTakenById(Long id) {
         MedicineLog medlog= medlogRepo.findById(id).orElse(null);
+        MedicineLogRequestDto medLogDto= new MedicineLogRequestDto();
         if ((medlog!= null)) {
+            medLogDto.setMedLogId(id);
             int medStock=medlog.getMedStock();
             if(medStock==0){
-                System.out.println("The medicine was not available.");
-                return null;
+                medLogDto.setMessage("Your medicine stock is empty. Cannot register the medicine as taken. Please refill now!!");
+                return medLogDto;
             }else{
                 
                 medStock = medStock-1;
+                medLogDto.setMessage("You have "+ medStock + " in you stock.");
                 if(medStock<5){
-                    System.out.println("This medicine is about to end, remaining: "+medStock);
+                medLogDto.setMessage("You medicine is low on stock, kindly refill soon. Remaining : "+ medStock);
                 }
                 medlog.setMedStock(medStock);
                 medlogRepo.save(medlog);
-                return medlog;
+                return medLogDto;
             }
         }
         return null;
 
 
+    }
+
+    public MedicineLogRequestDto updateMedicineLogRefillById(Long id,int newStock) {
+        
+        MedicineLog medlog = medlogRepo.findById(id).orElse(null);
+        MedicineLogRequestDto medLogDto= new MedicineLogRequestDto();
+        if (medlog!=null) {
+            medLogDto.setMedLogId(id);
+            int medStock= medlog.getMedStock();
+            medStock+= newStock;
+            medlog.setMedStock(medStock);
+            medlogRepo.save(medlog);
+            medLogDto.setMessage("Your medicine stock has been updated, new stock :" + medStock);
+            return medLogDto;
+        }
+        return null;
     }
     
 }

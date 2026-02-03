@@ -1,14 +1,11 @@
 package com.solmed.solmedbackend.MedicineLog;
 
-import com.solmed.solmedbackend.UserMedicine.UserMedicine;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -19,9 +16,9 @@ public class MedicineLog {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long MedLogId;
 
-    @OneToOne
-    @JoinColumn(name = "userMedicine")
-    private UserMedicine userMed;
+    
+    @Column(name = "userMedicineId")
+    private Long userMedId;
     
 
     @Column(name = "medStock", nullable = false, length = 4 )
@@ -33,8 +30,8 @@ public class MedicineLog {
     }
 
 
-    public UserMedicine getUserMed() {
-        return userMed;
+    public Long getUserMed() {
+        return userMedId;
     }
 
 
@@ -44,8 +41,8 @@ public class MedicineLog {
 
 
     
-    public void setUserMed(UserMedicine userMed) {
-        this.userMed = userMed;
+    public void setUserMedId(Long userMedId) {
+        this.userMedId = userMedId;
     }
 
 
