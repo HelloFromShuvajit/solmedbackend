@@ -4,7 +4,6 @@ package com.solmed.solmedbackend.UserMedicine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.solmed.solmedbackend.DTO.UserMedicineRequestDto;
 import com.solmed.solmedbackend.medicine.Medicine;
 import com.solmed.solmedbackend.medicine.MedicineRepository;
 import com.solmed.solmedbackend.user.User;

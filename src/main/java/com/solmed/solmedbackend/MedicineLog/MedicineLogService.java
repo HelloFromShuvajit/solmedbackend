@@ -5,18 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
 
-import com.solmed.solmedbackend.DTO.MedicineLogRequestDto;
-import com.solmed.solmedbackend.UserMedicine.UserMedicineRepository;
-
 @Service
 public class MedicineLogService {
 
     @Autowired
     private MedicineLogRepository medlogRepo;
-
-    @Autowired
-    private UserMedicineRepository userMedRepo;
-
 
     public MedicineLog getMedicinelogById(Long id) {
         return medlogRepo.findById(id).orElse(null);

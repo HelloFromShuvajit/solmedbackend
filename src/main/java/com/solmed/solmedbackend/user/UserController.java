@@ -6,45 +6,43 @@ import org.springframework.web.bind.annotation.RestController;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+
 
 
 
 @RestController
+@RequestMapping("/user")
 public class UserController {
     
     @Autowired
     private UserService userService;
 
-    @DeleteMapping("/deleteUserById/{id}")
+    @DeleteMapping("/{id}")
     public void deleteUserById(@PathVariable Long id){
         userService.deleteUserById(id);
     }
-    @PostMapping("/addUser")
+    @PostMapping("/add")
     public User postUser(@RequestBody User user) {
         return userService.addUser(user);
     }
-    @GetMapping("/getUserNameById/{id}")
-    public String getUserName(@PathVariable Long id) {
-        return userService.getUserName(id);
-    }
-    
 
-    @PatchMapping("/updateUserPhone/{id}")
-    public User patchUserPhone(@PathVariable Long id, @RequestBody Long phone){
-        return userService.updateUserPhone(id,phone);
+    @PutMapping("/{id}")
+    public User updateUser(@PathVariable Long id, @RequestBody User user ) {
+        return userService.updateUser(id,user);
     }
 
-    @GetMapping("/getAllUser")
+    @GetMapping("/list")
     public Iterable<User> getAllUsers() {
         return userService.getAllUsers();
     }
 
     
-    @GetMapping("/getUserById/{id}")
+    @GetMapping("/{id}")
     public User getUserById(@PathVariable Long id){
         return userService.getUserId(id);
     }

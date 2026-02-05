@@ -7,33 +7,35 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 
 
 
 @RestController
+@RequestMapping("/medicine")
 public class MedicineController {
     
     @Autowired
     private MedicineService medicineService;
 
-    @PostMapping("/addMedicine")
+    @PostMapping("/add")
     public Medicine postMedicine(@RequestBody Medicine medicine) {
         return medicineService.addMedicine(medicine);
     }
     
-    @GetMapping("/getAllMedicine")
+    @GetMapping("/list")
     public Iterable<Medicine> getAllMedicine() {
         return medicineService.getAllMedicine();
     }
     
 
-    @GetMapping("/getMedicineById/{id}")
+    @GetMapping("/{id}")
     public Medicine getMedicineById(@PathVariable Long id) {
         return medicineService.getMedicineById(id);
     }
     
-    @DeleteMapping("/deleteMedicineById/{id}")
+    @DeleteMapping("/{id}")
     public void deleteMedicineById(@PathVariable Long id){
         medicineService.deleteMedicineById(id);
     }

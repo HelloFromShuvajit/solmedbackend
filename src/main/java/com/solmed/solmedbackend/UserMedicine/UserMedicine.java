@@ -14,8 +14,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Data;
 
 @Entity
+@Data
 @Table(name = "user_medicines")
 public class UserMedicine {
 
@@ -33,33 +35,4 @@ public class UserMedicine {
     
     @Column(name = "med_timing")
     private LocalTime medTiming;
-
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Medicine getMedicine() {
-        return medicine;
-    }
-
-    public void setMedicine(Medicine medicine) {
-        this.medicine = medicine;
-    }
-
-    public LocalTime getMedTiming() {
-        return medTiming;
-    }
-
-    public void setMedTiming(LocalTime medTiming) {
-        this.medTiming = medTiming;
-    }
-
-    public Long getId() {
-        return id;
-    }
 }

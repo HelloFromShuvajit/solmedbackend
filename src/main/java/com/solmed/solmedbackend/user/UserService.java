@@ -15,15 +15,6 @@ public class UserService {
         return userrepo.save(user);
     }
 
-    public User updateUserPhone(Long id, Long phone){
-        User updateUser = userrepo.findById(id).orElse(null);
-        if (updateUser!= null) {
-            updateUser.setPhone(phone);
-            return userrepo.save(updateUser);
-        }
-        return null;
-    }
-
     public String getUserName(Long id){
         User user = userrepo.findById(id).orElse(null);
         if (user!= null) {
@@ -43,6 +34,19 @@ public class UserService {
 
     public void deleteUserById(Long id) {
         userrepo.deleteById(id);
+    }
+
+    public User updateUser(Long id, User user) {
+        User current = userrepo.findById(id).orElse(null);
+        if (current!= null) {
+            current.setAge(user.getAge());
+            current.setGender(user.getGender());
+            current.setName(user.getName());
+            current.setPhone(user.getPhone());
+            userrepo.save(current);
+            return current;
+        }
+        return null;
     }
 
 
