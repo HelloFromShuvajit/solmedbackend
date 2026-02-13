@@ -23,12 +23,15 @@ public class User {
     private String email;
 
     @Column(nullable = false, length = 10)
-    private Long phone;
+    private String phone;
 
     // need to add password with security in future
+
+    @Column(nullable = false, length = 100)
+    private String password;
     
     @Column(nullable = false, length = 3)
-    private int age;
+    private Integer age;
     
     @Column(nullable = false, length = 10)
     private String gender;

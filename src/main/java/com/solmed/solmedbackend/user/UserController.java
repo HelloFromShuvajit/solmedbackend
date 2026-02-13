@@ -1,7 +1,11 @@
 package com.solmed.solmedbackend.user;
 
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -41,7 +45,15 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+        try {
+            Optional<User> user = userService.login(loginRequest.getEmail(), loginRequest.getPassword());
+            return ResponseEntity.ok(user);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        }
+    }
     @GetMapping("/{id}")
     public User getUserById(@PathVariable Long id){
         return userService.getUserId(id);

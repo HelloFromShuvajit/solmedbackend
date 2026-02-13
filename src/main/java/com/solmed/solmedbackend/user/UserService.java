@@ -1,6 +1,7 @@
 package com.solmed.solmedbackend.user;
 
 
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,6 +49,12 @@ public class UserService {
         }
         return null;
     }
-
+    public Optional<User> login(String email, String password){
+        Optional<User> user = userrepo.findByEmailAndPassword(email, password);
+        if (user.isEmpty()) {
+            throw new RuntimeException("Invalid Credentials");
+        }
+        return user;
+    }
 
 }
