@@ -1,6 +1,8 @@
 package com.solmed.solmedbackend.UserMedicine;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,6 +49,10 @@ public class UserMedicineService {
             return userMedicineRepo.save(userMedicine);
         }
         return null;
+    }
+
+    public List<UserMedicine> getMedicinesByUserId(Long userID){
+        return userMedicineRepo.findByUserId(userID);
     }
 
 }

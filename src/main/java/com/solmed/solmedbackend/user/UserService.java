@@ -57,4 +57,15 @@ public class UserService {
         return user;
     }
 
+    public Optional<User> signup(User user) {
+        Optional<User> oldUser = userrepo.findByEmail(user.getEmail());
+        if (oldUser.isEmpty()) {
+            userrepo.save(user);
+            return Optional.of(user);
+        }
+        else{
+            throw new UnsupportedOperationException("User already exists.");
+        }
+    }
+
 }

@@ -1,6 +1,10 @@
 package com.solmed.solmedbackend.MedicineLog;
 
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +26,16 @@ public class MedicineLogController {
     @GetMapping("/{id}")
     public MedicineLog getMedicinelogById(@PathVariable Long id) {
         return medlogService.getMedicinelogById(id);
+    }
+    @GetMapping("/userMedicine/{Id}")
+    public ResponseEntity<?> getMedicinesByUserId(@PathVariable Long Id) {
+        try{
+            List<MedicineLog> medicinelogs= medlogService.getMedicinelogsByUserMedicineId(Id);
+            return ResponseEntity.ok(medicinelogs);
+        }
+        catch (RuntimeException e){ 
+            return ResponseEntity.status(404).body("No medicinelogs found under this user.");
+        }
     }
 
     @PostMapping("/add")

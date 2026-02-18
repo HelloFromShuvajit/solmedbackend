@@ -54,6 +54,18 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }
     }
+    @PostMapping("/signup")
+    public ResponseEntity<?> userSignUp(@RequestBody User user) {
+    try {
+        Optional<User> newUser = userService.signup(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newUser);  // 201 for created
+    } catch (IllegalArgumentException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());  // 400 for bad input
+    } catch (RuntimeException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());  // 409 for duplicate user
+    }
+}
+    
     @GetMapping("/{id}")
     public User getUserById(@PathVariable Long id){
         return userService.getUserId(id);

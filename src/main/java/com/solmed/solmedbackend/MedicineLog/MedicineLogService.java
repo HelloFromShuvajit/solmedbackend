@@ -1,5 +1,6 @@
 package com.solmed.solmedbackend.MedicineLog;
 
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -45,8 +46,6 @@ public class MedicineLogService {
             }
         }
         return null;
-
-
     }
 
     public MedicineLogRequestDto updateMedicineLogRefillById(Long id,int newStock) {
@@ -63,6 +62,10 @@ public class MedicineLogService {
             return medLogDto;
         }
         return null;
+    }
+
+    public List<MedicineLog> getMedicinelogsByUserMedicineId(Long userMedicineID) {
+        return medlogRepo.findByUserMedId(userMedicineID);
     }
     
 }
