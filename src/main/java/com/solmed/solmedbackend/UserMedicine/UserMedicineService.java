@@ -52,7 +52,7 @@ public class UserMedicineService {
     }
 
     public List<UserMedicine> getMedicinesByUserId(Long userID){
-        return userMedicineRepo.findByUserId(userID);
+        return userMedicineRepo.findByUser_Id(userID);
     }
 
 }
