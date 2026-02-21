@@ -35,4 +35,7 @@ public class User {
     
     @Column(nullable = false, length = 10)
     private String gender;
+
+    @Column(nullable = false, length = 10)
+    private String position;
 }
