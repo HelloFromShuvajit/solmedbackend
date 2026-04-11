@@ -7,6 +7,8 @@ import javax.crypto.SecretKey;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import com.solmed.solmedbackend.user.User;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -23,10 +25,14 @@ public class JwtUtil {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(User user) {
         long expiration = jwtProperties.getExpiration();
         return Jwts.builder()
-                .subject(userDetails.getUsername())
+                .subject(user.getUsername())
+                .claim("id", user.getId())       
+                .claim("name", user.getName())
+                .claim("position", user.getPosition())
+                .claim("role", user.getRole() != null ? user.getRole().name() : "OWNER")
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getSigningKey())

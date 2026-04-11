@@ -1,7 +1,5 @@
 package com.solmed.solmedbackend.medicine;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,14 +45,14 @@ public class MedicineController {
     @PostMapping("/addByUser")
     public ResponseEntity<?> addMedicineByUser(@RequestBody Medicine medicine) {
         try {
-            Optional<Medicine> newMed = medicineService.addMedicineByUser(medicine);
-            return ResponseEntity.status(HttpStatus.CREATED).body(newMed);
-            }
-            catch(IllegalArgumentException e){
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-            }
-            catch (RuntimeException e) {
+            // Return plain Medicine, not Optional — otherwise JSON is { "present": true, "value": {...} }
+            // and the frontend cannot read medicine.medId.
+            Medicine saved = medicineService.addMedicineByUser(medicine);
+            return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-            }        
-    }   
+        }
+    }
 }

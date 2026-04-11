@@ -3,6 +3,7 @@ package com.solmed.solmedbackend.UserMedicine;
 import java.time.LocalTime;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.solmed.solmedbackend.medicine.Medicine;
 import com.solmed.solmedbackend.user.User;
 
@@ -25,6 +26,7 @@ public class UserMedicine {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user")
     private User user;

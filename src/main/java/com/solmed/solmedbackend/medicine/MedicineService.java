@@ -37,14 +37,11 @@ public class MedicineService {
 
 
 
-    public Optional<Medicine> addMedicineByUser(Medicine medicine) {
-    Optional<Medicine> oldMed = medicinerepo.findBymedName(medicine.getMedName());
-    if (oldMed.isEmpty()) {
-        medicinerepo.save(medicine);
-        return Optional.of(medicine);
-    }
-    else{
-        return oldMed;
-    }
+    public Medicine addMedicineByUser(Medicine medicine) {
+        Optional<Medicine> existing = medicinerepo.findBymedName(medicine.getMedName());
+        if (existing.isPresent()) {
+            return existing.get();
+        }
+        return medicinerepo.save(medicine);
     }
 }

@@ -2,6 +2,7 @@ package com.solmed.solmedbackend.MedicineLog;
 
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +37,12 @@ public class MedicineLogController {
         catch (RuntimeException e){ 
             return ResponseEntity.status(404).body("No medicinelogs found under this user.");
         }
+    }
+
+    @GetMapping("/userMedicine/{userMedicineId}/taken-today")
+    public ResponseEntity<Map<String, Boolean>> doseTakenToday(@PathVariable Long userMedicineId) {
+        boolean taken = medlogService.isDoseTakenTodayForUserMedicine(userMedicineId);
+        return ResponseEntity.ok(Map.of("takenToday", taken));
     }
 
     @PostMapping("/add")

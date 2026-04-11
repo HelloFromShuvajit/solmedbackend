@@ -6,11 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
 
+import com.solmed.solmedbackend.dose.DoseLogService;
+
 @Service
 public class MedicineLogService {
 
     @Autowired
     private MedicineLogRepository medlogRepo;
+
+    @Autowired
+    private DoseLogService doseLogService;
 
     public MedicineLog getMedicinelogById(Long id) {
         return medlogRepo.findById(id).orElse(null);
@@ -42,6 +47,7 @@ public class MedicineLogService {
                 }
                 medlog.setMedStock(medStock);
                 medlogRepo.save(medlog);
+                doseLogService.markTakenForUserMedicine(medlog.getUserMedId());
                 return medLogDto;
             }
         }
@@ -67,5 +73,8 @@ public class MedicineLogService {
     public List<MedicineLog> getMedicinelogsByUserMedicineId(Long userMedicineID) {
         return medlogRepo.findByUserMedId(userMedicineID);
     }
-    
+
+    public boolean isDoseTakenTodayForUserMedicine(Long userMedicineId) {
+        return doseLogService.isTodaysDoseTakenForUserMedicine(userMedicineId);
+    }
 }

@@ -16,8 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
-
-
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 @RestController
 @RequestMapping("/user")
@@ -67,7 +66,17 @@ public class UserController {
 }
     
     @GetMapping("/{id}")
-    public User getUserById(@PathVariable Long id){
-        return userService.getUserId(id);
+    public ResponseEntity<User> getUserById(
+            @PathVariable Long id,
+            @AuthenticationPrincipal User principal) {
+        if (principal != null && principal.getRole() == UserRole.CARETAKER
+                && !principal.getId().equals(id)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        User u = userService.getUserId(id);
+        if (u == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(u);
     }
 }

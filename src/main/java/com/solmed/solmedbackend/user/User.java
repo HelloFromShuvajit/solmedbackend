@@ -1,5 +1,6 @@
 package com.solmed.solmedbackend.user;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -7,8 +8,12 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -32,8 +37,8 @@ public class User implements UserDetails {
     @Column(nullable = false, length = 10)
     private String phone;
 
-    // need to add password with security in future
-
+    /** Never included in JSON responses; still accepted on register/update request bodies. */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(nullable = false, length = 100)
     private String password;
     
@@ -45,10 +50,23 @@ public class User implements UserDetails {
 
     @Column(nullable = false, length = 10)
     private String position;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20, columnDefinition = "varchar(20) default 'OWNER'")
+    private UserRole role = UserRole.OWNER;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("position"));
-        // or map from a roles field if you have one
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        if ("Admin".equalsIgnoreCase(position)) {
+            authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        }
+        if (role == UserRole.CARETAKER) {
+            authorities.add(new SimpleGrantedAuthority("ROLE_CARETAKER"));
+        } else if (!"Admin".equalsIgnoreCase(position)) {
+            authorities.add(new SimpleGrantedAuthority("ROLE_OWNER"));
+        }
+        return authorities;
     }
 
     @Override

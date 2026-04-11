@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.solmed.solmedbackend.dose.DoseLogService;
 import com.solmed.solmedbackend.medicine.Medicine;
 import com.solmed.solmedbackend.medicine.MedicineRepository;
 import com.solmed.solmedbackend.user.User;
@@ -23,6 +24,9 @@ public class UserMedicineService {
     @Autowired
     private MedicineRepository medrepo;
 
+    @Autowired
+    private DoseLogService doseLogService;
+
 
     public UserMedicine getUserMedicineName(Long id) {
         return userMedicineRepo.findById(id).orElse(null);
@@ -35,7 +39,9 @@ public class UserMedicineService {
         userMedicine.setMedicine(medicine);
         userMedicine.setMedTiming(userMedicineDto.getInputTime());
         
-        return userMedicineRepo.save(userMedicine);
+        UserMedicine saved = userMedicineRepo.save(userMedicine);
+        doseLogService.seedDoseLogsForUserMedicine(saved, 21);
+        return saved;
     }
 
     public void deleteUserMedicineById(Long id) {

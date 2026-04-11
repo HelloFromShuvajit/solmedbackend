@@ -37,8 +37,23 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()   // preflight
-                        .requestMatchers("/api/auth/**").permitAll()              // login/register
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/caretaker/request-link").hasRole("CARETAKER")
+                        .requestMatchers(HttpMethod.GET, "/api/caretaker/my-link-requests").hasRole("CARETAKER")
+                        .requestMatchers(HttpMethod.GET, "/api/caretaker/incoming-link-requests")
+                                .hasAnyRole("OWNER", "ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/caretaker/link-requests/**")
+                                .hasAnyRole("OWNER", "ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/caretaker/list")
+                                .hasAnyRole("OWNER", "ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/caretaker/revoke/**")
+                                .hasAnyRole("OWNER", "ADMIN")
+                        .requestMatchers("/api/caretaker/patients", "/api/caretaker/patient/**")
+                                .hasRole("CARETAKER")
+                        .requestMatchers("/medicine/**", "/userMedicine/**", "/medicineLog/**")
+                                .hasAnyRole("OWNER", "ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/user/list").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sess -> sess
@@ -71,7 +86,6 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        // Allow all origins for development; tighten this in production
         config.setAllowedOriginPatterns(List.of("*"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
