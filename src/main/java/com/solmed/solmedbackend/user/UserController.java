@@ -16,8 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
-
-
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 @RestController
 @RequestMapping("/user")
@@ -54,8 +53,30 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }
     }
+    @PostMapping("/signup")
+    public ResponseEntity<?> userSignUp(@RequestBody User user) {
+    try {
+        Optional<User> newUser = userService.signup(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newUser);  // 201 for created
+    } catch (IllegalArgumentException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());  // 400 for bad input
+    } catch (RuntimeException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());  // 409 for duplicate user
+    }
+}
+    
     @GetMapping("/{id}")
-    public User getUserById(@PathVariable Long id){
-        return userService.getUserId(id);
+    public ResponseEntity<User> getUserById(
+            @PathVariable Long id,
+            @AuthenticationPrincipal User principal) {
+        if (principal != null && principal.getRole() == UserRole.CARETAKER
+                && !principal.getId().equals(id)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        User u = userService.getUserId(id);
+        if (u == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(u);
     }
 }

@@ -1,5 +1,7 @@
 package com.solmed.solmedbackend.medicine;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,7 @@ public class MedicineService {
 
 
     public Medicine addMedicine(Medicine medicine) {
+        
         return medicinerepo.save(medicine);
     }
 
@@ -30,5 +33,15 @@ public class MedicineService {
 
     public void deleteMedicineById(Long id) {
         medicinerepo.deleteById(id);
+    }
+
+
+
+    public Medicine addMedicineByUser(Medicine medicine) {
+        Optional<Medicine> existing = medicinerepo.findBymedName(medicine.getMedName());
+        if (existing.isPresent()) {
+            return existing.get();
+        }
+        return medicinerepo.save(medicine);
     }
 }

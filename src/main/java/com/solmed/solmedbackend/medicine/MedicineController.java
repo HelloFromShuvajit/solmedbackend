@@ -1,6 +1,8 @@
 package com.solmed.solmedbackend.medicine;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,5 +40,19 @@ public class MedicineController {
     @DeleteMapping("/{id}")
     public void deleteMedicineById(@PathVariable Long id){
         medicineService.deleteMedicineById(id);
+    }
+
+    @PostMapping("/addByUser")
+    public ResponseEntity<?> addMedicineByUser(@RequestBody Medicine medicine) {
+        try {
+            // Return plain Medicine, not Optional — otherwise JSON is { "present": true, "value": {...} }
+            // and the frontend cannot read medicine.medId.
+            Medicine saved = medicineService.addMedicineByUser(medicine);
+            return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        }
     }
 }
