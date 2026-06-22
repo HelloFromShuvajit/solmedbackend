@@ -1,7 +1,19 @@
 package com.solmed.solmedbackend.user;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -12,7 +24,7 @@ import lombok.Data;
 @Entity
 @Table(name ="users")
 @Data
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,8 +37,8 @@ public class User {
     @Column(nullable = false, length = 10)
     private String phone;
 
-    // need to add password with security in future
-
+    /** Never included in JSON responses; still accepted on register/update request bodies. */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(nullable = false, length = 100)
     private String password;
     
@@ -35,4 +47,43 @@ public class User {
     
     @Column(nullable = false, length = 10)
     private String gender;
+
+    @Column(nullable = false, length = 10)
+    private String position;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20, columnDefinition = "varchar(20) default 'OWNER'")
+    private UserRole role = UserRole.OWNER;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        if ("Admin".equalsIgnoreCase(position)) {
+            authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        }
+        if (role == UserRole.CARETAKER) {
+            authorities.add(new SimpleGrantedAuthority("ROLE_CARETAKER"));
+        } else if (!"Admin".equalsIgnoreCase(position)) {
+            authorities.add(new SimpleGrantedAuthority("ROLE_OWNER"));
+        }
+        return authorities;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.email; // whatever is your unique identifier
+    }
+
+    @Override
+    public boolean isAccountNonExpired() { return true; }
+
+    @Override
+    public boolean isAccountNonLocked() { return true; }
+
+    @Override
+    public boolean isCredentialsNonExpired() { return true; }
+
+    @Override
+    public boolean isEnabled() { return true; }
 }
+

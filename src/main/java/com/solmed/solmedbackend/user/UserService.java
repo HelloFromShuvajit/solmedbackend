@@ -3,14 +3,23 @@ package com.solmed.solmedbackend.user;
 
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
+
     
     @Autowired 
     private UserRepository userrepo;
+    
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        return userrepo.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + email));
+    }
 
     public User addUser(User user){
         return userrepo.save(user);
@@ -55,6 +64,17 @@ public class UserService {
             throw new RuntimeException("Invalid Credentials");
         }
         return user;
+    }
+
+    public Optional<User> signup(User user) {
+        Optional<User> oldUser = userrepo.findByEmail(user.getEmail());
+        if (oldUser.isEmpty()) {
+            userrepo.save(user);
+            return Optional.of(user);
+        }
+        else{
+            throw new UnsupportedOperationException("User already exists.");
+        }
     }
 
 }

@@ -1,6 +1,10 @@
 package com.solmed.solmedbackend.UserMedicine;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 
 
 
@@ -24,10 +29,13 @@ public class UserMedicineController {
     public UserMedicine getUserMedicineName(@PathVariable Long id){
         return userMedicineService.getUserMedicineName(id);
     } 
-
     @PostMapping("/add")
-    public UserMedicine addUserMedicine(@RequestBody UserMedicineRequestDto userMedDto) {
-    return userMedicineService.addUserMedicine(userMedDto);
+    public ResponseEntity<?> addUserMedicine(@RequestBody UserMedicineRequestDto userMedDto) {
+        try {
+            return ResponseEntity.status(HttpStatus.CREATED).body(userMedicineService.addUserMedicine(userMedDto));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        }
     }
 
     @PatchMapping("/medicine/{id}")
@@ -35,6 +43,18 @@ public class UserMedicineController {
         return userMedicineService.updateMedicineUserMedById(medId, id);
 
     }
+
+    @GetMapping("/user/{Id}")
+    public ResponseEntity<?> getMedicinesByUserId(@PathVariable Long Id) {
+        try{
+            List<UserMedicine> medicines= userMedicineService.getMedicinesByUserId(Id);
+            return ResponseEntity.ok(medicines);
+        }
+        catch (RuntimeException e){ 
+            return ResponseEntity.status(404).body("No medicines found under this user.");
+        }
+    }
+    
 
     @DeleteMapping("/{id}")
     public void deleteUserMedicineById(@PathVariable Long id){
